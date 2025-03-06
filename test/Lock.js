@@ -28,5 +28,18 @@ it("allows multiple players to enter",async()=>{
   await lottery.connect(player3).enter({value:ethers.parseEther("0.1")});
   const players = await lottery.getPlayers();
   expect(players.length).to.equal(3);
+  expect(player1.address).to.equal(players[0]);
+  expect(player2.address).to.equal(players[1]);
+  expect(player3.address).to.equal(players[2]);
+  
+});
+it("requires minimum amount of ether to enter",async()=>{
+  try{
+  await lottery.connect(player1).enter({value:ethers.parseEther("0")});
+  expect.fail("can enter the lottery without minimum ether");
+  }
+  catch(e){
+    expect(e)
+  }
 })
 })
