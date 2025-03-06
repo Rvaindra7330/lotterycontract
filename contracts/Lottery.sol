@@ -17,6 +17,7 @@ contract Lottery {
 
     function pickWinner() public{
         require(msg.sender==owner,"only owner can pick the winner");
+        require(players.length > 0,"no player in the lottery");
         uint winnerIndex = uint256(keccak256(abi.encodePacked(block.timestamp,players.length)))%players.length;
 
         address payable winner = payable(players[winnerIndex]);
