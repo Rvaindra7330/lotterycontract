@@ -42,4 +42,10 @@ it("requires minimum amount of ether to enter",async()=>{
     expect(e);
   }
 })
+it("picks a winner and resets", async () => {
+  await lottery.connect(player1).enter({ value: ethers.parseEther("0.05") });
+  await lottery.connect(player2).enter({ value: ethers.parseEther("0.05") });
+  await lottery.pickWinner();
+  expect(await lottery.getPlayers()).to.have.lengthOf(0);
+});
 })
