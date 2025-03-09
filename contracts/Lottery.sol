@@ -5,14 +5,17 @@ contract Lottery {
 
     address public owner;
     address[] public players;
+    uint public entryfee = 0.0005 ether;
+    event playerEntered(address indexed player,uint amount);
 
     constructor(){
         owner=msg.sender;
     }
 
     function enter() public payable{
-        require(msg.value > 0 ,"must pay some ether to enter the lottery");
+        require(msg.value > entryfee ,"must pay some ether to enter the lottery");
         players.push(msg.sender);
+        emit playerEntered(msg.sender, msg.value);
     }
 
     function pickWinner() public{
