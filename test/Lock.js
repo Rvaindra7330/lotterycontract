@@ -48,4 +48,15 @@ it("picks a winner and resets", async () => {
   await lottery.pickWinner();
   expect(await lottery.getPlayers()).to.have.lengthOf(0);
 });
+it("only owner can pick the caller",async()=>{
+  await lottery.connect(player1).enter({value:ethers.parseEther("0.05")});
+  try{
+    await lottery.connect(player1).pickWinner();
+    expect.fail("players can able to pick the winner");
+  } catch(e){
+    expect(e)
+  }
+  await lottery.connect(owner).pickWinner();
+  expect(await lottery.getPlayers()).to.have.lengthOf(0);
+})
 })
