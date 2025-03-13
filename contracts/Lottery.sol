@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/access/Ownable.sol";
-contract Lottery is Ownable {
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+contract Lottery is Ownable,ReentrancyGuard {
 
     struct Player{
         address addrs;
@@ -19,7 +21,7 @@ contract Lottery is Ownable {
         emit playerEntered(msg.sender, msg.value);
     }
 
-    function pickWinner() public onlyOwner{
+    function pickWinner() public onlyOwner nonReentrant{
         require(players.length > 0,"no player in the lottery");
         uint winnerIndex = uint256(keccak256(abi.encodePacked(block.timestamp,players.length)))%players.length;
         payable(players[winnerIndex].addrs).transfer(address(this).balance);
